@@ -1,0 +1,68 @@
+<div class='container mt-5' style="height:100%">
+    <!-- <div class="row"> -->
+    <!-- {{countryCode}} -->
+    <button [routerLink]="['/']" type="button" class="btn btn-light px-4 mb-4 buttonShadow"><i
+            class="fa fa-long-arrow-left"></i>
+        &nbsp;Back</button>
+    <!-- </div> -->
+    <div *ngIf="country" class='row align-items-center justify-content-between'>
+        <div class='col-md-5 col-sm-12 my-5'>
+            <img class='flag' src={{country.flag}}>
+        </div>
+        <div class='col-md-5 col-sm-12'>
+            <span class='countryInfoHeader'>
+                <b class='me-2'>{{country.name}}</b>
+                <i *ngIf="!companyInFavorite; else elseBlock" (click)="addToFavorite()" class="fa fa-star-o star"></i>
+                <ng-template #elseBlock>
+                    <i (click)="removeFromFavorite()" class="fa fa-star star favorite"></i>
+                </ng-template>
+            </span>
+
+            <div class='countryInfo row mt-3'>
+                <div class="col-md-6 col-sm-12 mb-5">
+                    <b>Native Name: </b> {{country.nativeName || 'N/A'}} <br>
+                    <b>Population: </b> {{country.population || 'N/A'}} <br>
+                    <b>Region: </b> {{country.region || 'N/A'}} <br>
+                    <b>Subregion: </b> {{country.subregion || 'N/A'}} <br>
+                    <b>Capital: </b> {{country.capital || 'N/A'}} <br>
+                </div>
+                <div class="col-md-6 col-sm-12 mb-5">
+                    <b>Top Level Domain: </b> {{country.topLevelDomain[0]}}
+                    <div>
+                        <b>Currencies: </b>
+                        <span *ngFor="let currency of country.currencies; let isLast=last"> {{currency.name}}{{isLast ?
+                            '' : ', '}}</span>
+                    </div>
+                    <div>
+                        <b>Languages: </b>
+                        <span *ngFor="let language of country.languages; let isLast=last"> {{language.name}}{{isLast ?
+                            ''
+                            :
+                            ', '}}</span>
+                    </div>
+                </div>
+            </div>
+            <div class='row'>
+                <span>
+                    <div *ngIf="country.borders.length > 0 else noItems">
+                        <div>
+                            <b>Border Countries: </b>
+                            <span class="col-1" *ngFor="let border of borders"><button type="button"
+                                    class="btn btn-light btn-sm mx-1 borderButtonShadow my-1" [routerLink]="['/', 'country', border.code]">
+                                    {{border.name}}</button> </span>
+                        </div>
+    
+                    </div>
+
+                    <ng-template #noItems>
+                        <b>Border Countries: </b>
+                        N/A
+                    </ng-template>
+                </span>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

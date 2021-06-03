@@ -1,0 +1,48 @@
+<div style="background-color: #fafafa; height:100%;">
+  <div class="container h-100">
+    <div *ngIf="!actAsFavorites" class="row pt-4 justify-content-between">
+      <div class="col-md-4 col-sm-12">
+        <div class="input-group mb-4">
+          <i class="fa fa-search input-group-text searchIcon"></i>
+          <input (keyup)="onSearch($event)" type="search" id="searchBox" class="form-control" style='border-left: none'
+            placeholder="Search for a country..." />
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-12 text-xl-end dropdown">
+        <a class="btn btn-light dropdown-toggle filterShadow" href="#" role="button" id="dropdownMenuLink"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          Filter by Region
+        </a>
+
+        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+          <li><a class="dropdown-item" (click)="regionFilter('Africa')">Africa</a></li>
+          <li><a class="dropdown-item" (click)="regionFilter('Americas')">Americas</a></li>
+          <li><a class="dropdown-item" (click)="regionFilter('Asia')">Asia</a></li>
+          <li><a class="dropdown-item" (click)="regionFilter('Europe')">Europe</a></li>
+          <li><a class="dropdown-item" (click)="regionFilter('Oceania')">Oceania</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="row h-100 justify-content-between pt-3">
+      <div *ngIf="actAsFavorites" class="col-5 pt-2">
+        <button [routerLink]="['/']" type="button" class="btn btn-light px-4 mb-4 buttonShadow"><i
+            class="fa fa-long-arrow-left"></i>
+          &nbsp;Back</button>
+      </div>
+      <h3 *ngIf="actAsFavorites" class="mb-3"><b>Favorite countries</b></h3>
+      <div [routerLink]="['/','country', country.alpha2Code]" class="col-3 mb-5 mx-auto card countryCard"
+        *ngFor="let country of countries | async">
+        <img src="{{country.flag}}" class="card-img-top cardImage" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{country.name}}</h5>
+          <p class="card-text">
+            <b>Population: </b>{{country.population | number:'1.0':'en-US' || 'N/A'}} <br>
+            <b>Region: </b>{{country.region || 'N/A'}} <br>
+            <b>Capital:</b> {{country.capital || 'N/A'}} <br>
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

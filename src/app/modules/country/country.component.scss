@@ -1,0 +1,30 @@
+.flag {
+  width: 100%;
+  max-height: 50vh;
+  object-fit: contain;
+}
+
+.countryInfoHeader {
+  font-size: x-large;
+}
+
+.countryInfo {
+  line-height: 1.75rem;
+}
+
+.star {
+  cursor: pointer;
+  color: gray;
+}
+
+.favorite {
+  color: darkorange;
+}
+
+.buttonShadow {
+  box-shadow: 0px 0px 8px 1px #a0a0a0;
+}
+
+.borderButtonShadow {
+  box-shadow: 0px 0px 4px 1px #b6b6b6;
+}
