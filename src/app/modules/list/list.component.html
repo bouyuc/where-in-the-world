@@ -20,6 +20,7 @@
           <li><a class="dropdown-item" (click)="regionFilter('Asia')">Asia</a></li>
           <li><a class="dropdown-item" (click)="regionFilter('Europe')">Europe</a></li>
           <li><a class="dropdown-item" (click)="regionFilter('Oceania')">Oceania</a></li>
+          <li><a class="dropdown-item" (click)="regionFilter('')">All Regions</a></li>
         </ul>
       </div>
     </div>
@@ -30,8 +31,17 @@
           &nbsp;Back</button>
       </div>
       <h3 *ngIf="actAsFavorites" class="mb-3"><b>Favorite countries</b></h3>
-      <div [routerLink]="['/','country', country.alpha2Code]" class="col-3 mb-5 mx-auto card countryCard"
-        *ngFor="let country of countries | async">
+      <div *ngIf="actAsFavorites && !countries">
+        <div class='row justify-content-center'>
+          <img class="col-md-5" src="https://bouyuc.com/static/images/undraw_Around_the_world_re_n353.svg">
+        </div>
+        <div class='row justify-content-center mt-3' style="text-align: center;">
+          <div class='col-12'>Click on the <i class="fa fa-star-o"></i> next to the country name to add it to your
+              favorites</div>
+        </div>
+      </div>
+      <div [routerLink]="['/','country', country.alpha3Code]" class="col-3 mb-5 mx-auto card countryCard"
+        *ngFor="let country of countries | countryFilter: region | async">
         <img src="{{country.flag}}" class="card-img-top cardImage" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{country.name}}</h5>
