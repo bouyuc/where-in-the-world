@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { ListRoutingModule } from './list-routing.module';
 import { ListComponent } from './list.component';
+import { CountryFilterPipe } from './country-filter.pipe';
 
 
 @NgModule({
   declarations: [
-    ListComponent
+    ListComponent,
+    CountryFilterPipe
   ],
   imports: [
     CommonModule,
