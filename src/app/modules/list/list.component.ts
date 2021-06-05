@@ -1,24 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GetDataService } from 'src/app/shared/services/get-data.service'
 import { HttpClient } from '@angular/common/http';
-import { from, Subject } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { from, Observable, Subject, } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter,map } from 'rxjs/operators';
 import { ActivatedRoute } from "@angular/router";
-
-export interface CountryData {
-  name?: string,
-  population?: string,
-  capital?: string,
-  region?: string,
-  flag?: string,
-  nativeName?: string,
-  topLevelDoamin?: string[],
-  currencies?: Object[],
-  languages?: Object[],
-  subregion?: string,
-  borders?: string,
-  alpha2Code?: string
-}
+import { CountryData } from 'src/app/shared/interface/country-data'
 
 
 @Component({
@@ -29,8 +15,8 @@ export interface CountryData {
 export class ListComponent implements OnInit {
   private subjectKeyUp = new Subject<any>();
   actAsFavorites = false;
-  title = 'whereInTheWorld';
-  countries: any;
+  countries: Observable<CountryData[]> | undefined;
+  region: string = '';
 
   constructor(
     private getDataService: GetDataService
@@ -38,17 +24,17 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {
     this.actAsFavorites = window.location.pathname.includes('/favorites') ? true : false;
-    if(this.actAsFavorites){
+    if (this.actAsFavorites) {
       this.getFavorites();
-    }else{
+    } else {
       this.countries = this.getDataService.getAllCountries();
     }
-    
+
     this.subjectKeyUp
       .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((searchTerm) => {
         if (searchTerm.length !== 0) {
-          this.countries = this.getDataService.getCountry(searchTerm);
+          this.countries = this.getDataService.getCountryFromQuery(searchTerm);
         } else {
           this.countries = this.getDataService.getAllCountries();
         }
@@ -61,13 +47,13 @@ export class ListComponent implements OnInit {
   }
 
   regionFilter(region: string) {
-    this.countries = this.getDataService.getCountriesFromRegion(region);
+    this.region = region;
   }
 
-  getFavorites(){
+  getFavorites() {
     let favorites = window.localStorage.getItem('favorites');
-    if(favorites){
-      this.countries = this.getDataService.getCountriesUsingCodes(favorites.split(',').join(';'));
+    if (favorites) {
+      this.countries = this.getDataService.getCountriesUsingCodes(favorites.split(','));
     }
   }
 }

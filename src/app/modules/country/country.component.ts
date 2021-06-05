@@ -1,22 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
 import { GetDataService } from 'src/app/shared/services/get-data.service'
-
-export interface CountryData {
-  name?: string,
-  population?: string,
-  capital?: string,
-  region?: string,
-  flag?: string,
-  nativeName?: string,
-  topLevelDoamin?: string[],
-  currencies?: Object[],
-  languages?: Object[],
-  subregion?: string,
-  borders?: string,
-  alpha2Code?: string
-}
-
+import { CountryData } from 'src/app/shared/interface/country-data'
 @Component({
   selector: 'app-country',
   templateUrl: './country.component.html',
@@ -37,14 +22,18 @@ export class CountryComponent implements OnInit {
     this.route.paramMap.subscribe(paramMap => {
       this.countryCode = paramMap.get('countryCode');
       this.companyInFavorite = this.favorites.indexOf(this.countryCode) !== -1;
-      this.getDataService.getCountryUsingCode(this.countryCode).subscribe(data => {
+      this.getDataService.getCountryUsingCode(this.countryCode)?.subscribe(data => {
+        console.log(data);
         this.country = data;
         console.log(this.country.borders);
-        this.getDataService.getCountriesUsingCodes(this.country.borders.join(';')).subscribe(countries=>{
-          this.borders = countries.map((countryData: CountryData)=>{
-            return {'code': countryData.alpha2Code, 'name': countryData.name}
+        if (this.country.borders.length > 0) {
+          this.getDataService.getCountriesUsingCodes(this.country.borders)?.subscribe(countries => {
+            console.log(countries);
+            this.borders = countries.map((countryData: CountryData) => {
+              return { 'code': countryData.alpha3Code, 'name': countryData.name }
+            })
           })
-        })
+        }
       });
     });
   }

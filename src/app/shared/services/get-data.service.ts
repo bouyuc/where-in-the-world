@@ -1,56 +1,59 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-import { map, first } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { CountryData } from 'src/app/shared/interface/country-data'
 
 @Injectable({
   providedIn: 'root'
 })
 export class GetDataService {
 
-  countries: Object[] = [];
+  countries: Observable<CountryData[]> | undefined;
   constructor(
     private http: HttpClient
   ) {
-
+    this.initData();
   }
 
-  test() {
-    let cachedData = window.localStorage.getItem('all')
-    if (cachedData) {
-      alert('from cache');
-      this.countries = JSON.parse(cachedData);
-      console.log(this.countries);
-    } else {
-      this.http.get("https://restcountries.eu/rest/v2/all").subscribe((data: any) => {
-        alert('fresh');
-        this.countries = data;
-        console.log(this.countries);
-        window.localStorage.setItem('all', JSON.stringify(data));
+  initData() {
+    let cached = window.localStorage.getItem('allCountries');
 
-      });
+    if (cached) {
+      this.countries = of(JSON.parse(cached)) as Observable<CountryData[]> | undefined;
+    } else {
+      let tmp = this.http.get("https://restcountries.eu/rest/v2/all")
+      this.countries = tmp.pipe(map((d: any) => d));
+      tmp.subscribe((data) => {
+        window.localStorage.setItem("allCountries", JSON.stringify(data));
+      })
     }
   }
 
-  getAllCountries(): Observable<any> {
-    return this.http.get("https://restcountries.eu/rest/v2/all").pipe(map((d: any) => d));
+  getAllCountries(): Observable<CountryData[]> | undefined {
+    return this.countries;
   }
 
-  getCountriesFromRegion(region: string): Observable<any> {
-    return this.http.get(`https://restcountries.eu/rest/v2/region/${region}`).pipe(map((d: any) => d));
-  }
-
-  getCountry(name: string): Observable<any> {
+  getCountryFromQuery(name: string): Observable<any> {
     return this.http.get(`https://restcountries.eu/rest/v2/name/${name}`).pipe(map((d: any) => d));
   }
 
-  getCountryUsingCode(code: string): Observable<any> {
-    return this.http.get(`https://restcountries.eu/rest/v2/alpha/${code}`).pipe(first((d: any) => d));
+  getCountryUsingCode(code: string): Observable<CountryData> | undefined {
+    // return this.http.get(`https://restcountries.eu/rest/v2/alpha/${code}`).pipe(first((d: any) => d));
+    return this.countries?.pipe(
+      map(countries => countries.find(country => country.alpha3Code == code))
+    ) as Observable<CountryData> | undefined
+
   }
 
-  getCountriesUsingCodes(codes: string): Observable<any> {
-    return this.http.get(`https://restcountries.eu/rest/v2/alpha?codes=${codes}`).pipe(map((d: any) => d));
+  getCountriesUsingCodes(codes: string[]): Observable<CountryData[]> | undefined {
+    // return this.http.get(`https://restcountries.eu/rest/v2/alpha?codes=${codes}`).pipe(map((d: any) => d));
+    return this.countries?.pipe(
+      map(countries => countries.filter(country =>
+        codes.find((code) => {
+          return country.alpha3Code == code;
+        })
+      )))
   }
 
 }
