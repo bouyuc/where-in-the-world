@@ -1,29 +1,27 @@
 import { Component, OnInit } from '@angular/core';
-import { GetDataService } from 'src/app/shared/services/get-data.service'
-import { HttpClient } from '@angular/common/http';
-import { from, Observable, Subject, } from 'rxjs';
-import { debounceTime, distinctUntilChanged, filter,map } from 'rxjs/operators';
-import { ActivatedRoute } from "@angular/router";
-import { CountryData } from 'src/app/shared/interface/country-data'
-
+import { GetDataService } from 'src/app/shared/services/get-data.service';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { CountryData } from 'src/app/shared/interface/country-data';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
   private subjectKeyUp = new Subject<any>();
   actAsFavorites = false;
   countries: Observable<CountryData[]> | undefined;
   region: string = '';
+  selectedRegion: HTMLElement | undefined;
 
-  constructor(
-    private getDataService: GetDataService
-  ) { }
+  constructor(private getDataService: GetDataService) {}
 
   ngOnInit(): void {
-    this.actAsFavorites = window.location.pathname.includes('/favorites') ? true : false;
+    this.actAsFavorites = window.location.pathname.includes('/favorites')
+      ? true
+      : false;
     if (this.actAsFavorites) {
       this.getFavorites();
     } else {
@@ -47,13 +45,25 @@ export class ListComponent implements OnInit {
   }
 
   regionFilter(region: string) {
-    this.region = region;
+    Array.from(document.getElementsByClassName('dropdown-item')).forEach(
+      (element) => {
+        element.classList.remove('active');
+      }
+    );
+    if (this.region !== region) {
+      document.getElementById(`region-${region}`)?.classList.add('active');
+      this.region = region;
+    } else {
+      this.region = '';
+    }
   }
 
   getFavorites() {
     let favorites = window.localStorage.getItem('favorites');
     if (favorites) {
-      this.countries = this.getDataService.getCountriesUsingCodes(favorites.split(','));
+      this.countries = this.getDataService.getCountriesUsingCodes(
+        favorites.split(',')
+      );
     }
   }
 }

@@ -15,12 +15,12 @@
         </a>
 
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-          <li><a class="dropdown-item" (click)="regionFilter('Africa')">Africa</a></li>
-          <li><a class="dropdown-item" (click)="regionFilter('Americas')">Americas</a></li>
-          <li><a class="dropdown-item" (click)="regionFilter('Asia')">Asia</a></li>
-          <li><a class="dropdown-item" (click)="regionFilter('Europe')">Europe</a></li>
-          <li><a class="dropdown-item" (click)="regionFilter('Oceania')">Oceania</a></li>
-          <li><a class="dropdown-item" (click)="regionFilter('')">All Regions</a></li>
+          <li><a id="region-Africa" class="dropdown-item" (click)="regionFilter('Africa')">Africa</a></li>
+          <li><a id="region-Americas" class="dropdown-item" (click)="regionFilter('Americas')">Americas</a></li>
+          <li><a id="region-Asia" class="dropdown-item" (click)="regionFilter('Asia')">Asia</a></li>
+          <li><a id="region-Europe" class="dropdown-item" (click)="regionFilter('Europe')">Europe</a></li>
+          <li><a id="region-Oceania" class="dropdown-item" (click)="regionFilter('Oceania')">Oceania</a></li>
+          <!-- <li><a id="region-All" class="dropdown-item" (click)="regionFilter('')">All Regions</a></li> -->
         </ul>
       </div>
     </div>
@@ -40,7 +40,7 @@
               favorites</div>
         </div>
       </div>
-      <div [routerLink]="['/','country', country.alpha3Code]" class="col-3 mb-5 mx-auto card countryCard"
+      <div [routerLink]="['/', actAsFavorites ? 'favorites' : 'country', country.alpha3Code]" class="col-3 mb-5 mx-auto card countryCard"
         *ngFor="let country of countries | countryFilter: region | async">
         <img src="{{country.flag}}" class="card-img-top cardImage" alt="...">
         <div class="card-body">

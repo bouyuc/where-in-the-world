@@ -6,12 +6,17 @@ const routes: Routes = [
     path: '', loadChildren: () =>
       import("src/app/modules/list/list.module").then((m) => m.ListModule)
   },
+  { path: 'country',   redirectTo: '', pathMatch: 'full' },
   {
     path: 'favorites/', loadChildren: () =>
       import("src/app/modules/list/list.module").then((m) => m.ListModule)
   },
   {
     path: 'country/:countryCode', loadChildren: () =>
+      import("src/app/modules/country/country.module").then((m) => m.CountryModule)
+  },
+  {
+    path: 'favorites/:countryCode', loadChildren: () =>
       import("src/app/modules/country/country.module").then((m) => m.CountryModule)
   }
 ];
