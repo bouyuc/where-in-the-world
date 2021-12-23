@@ -23,14 +23,11 @@ export class CountryComponent implements OnInit {
       this.countryCode = paramMap.get('countryCode');
       this.companyInFavorite = this.favorites.indexOf(this.countryCode) !== -1;
       this.getDataService.getCountryUsingCode(this.countryCode)?.subscribe(data => {
-        console.log(data);
         this.country = data;
-        console.log(this.country.borders);
-        if (this.country.borders.length > 0) {
+        if (this.country.borders?.length > 0) {
           this.getDataService.getCountriesUsingCodes(this.country.borders)?.subscribe(countries => {
-            console.log(countries);
             this.borders = countries.map((countryData: CountryData) => {
-              return { 'code': countryData.alpha3Code, 'name': countryData.name }
+              return { 'code': countryData.cca3, 'name': countryData.name.official }
             })
           })
         }

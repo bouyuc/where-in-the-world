@@ -40,11 +40,11 @@
               favorites</div>
         </div>
       </div>
-      <div [routerLink]="['/', actAsFavorites ? 'favorites' : 'country', country.alpha3Code]" class="col-3 mb-5 mx-auto card countryCard"
+      <div [routerLink]="['/', actAsFavorites ? 'favorites' : 'country', country.cca3]" class="col-3 mb-5 mx-auto card countryCard"
         *ngFor="let country of countries | countryFilter: region | async">
-        <img src="{{country.flag}}" class="card-img-top cardImage" alt="...">
+        <img src="{{country.flags.png}}" class="card-img-top cardImage" alt="...">
         <div class="card-body">
-          <h5 class="card-title">{{country.name}}</h5>
+          <h5 class="card-title">{{country.name.official}}</h5>
           <p class="card-text">
             <b>Population: </b>{{country.population | number:'1.0':'en-US' || 'N/A'}} <br>
             <b>Region: </b>{{country.region || 'N/A'}} <br>

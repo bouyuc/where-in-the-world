@@ -14,7 +14,7 @@
 
 ## Implemented
 1. List of countries page
-    1. User can see country data from https://restcountries.eu/
+    1. User can see country data from https://restcountries.com/
     2. User can search for a country using the input field
     3. User can filter the list of countries by region
     4. User can click on any country to see more details

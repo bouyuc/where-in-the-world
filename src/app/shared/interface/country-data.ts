@@ -1,15 +1,27 @@
 export interface CountryData {
-    name: string,
+    name: CountryName,
     population: string,
     capital: string,
     region: string,
-    flag: string,
+    flags: CountryFlags,
     nativeName: string,
     topLevelDoamin: string[],
-    currencies: Object[],
+    currencies: Object,
     languages: Object[],
     subregion: string,
-    borders: string,
+    borders: string[],
     alpha2Code: string,
-    alpha3Code: string
+    alpha3Code: string,
+    cca3: string
+}
+
+export interface CountryName{
+  common: string,
+  nativeName: any,
+  official: string
+}
+
+export interface CountryFlags{
+  png: string,
+  svg: string
 }
