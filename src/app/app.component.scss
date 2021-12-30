@@ -1,7 +1,17 @@
 .favoriteButton {
+  margin-right: 2rem;
+  cursor: pointer;
+}
+
+.themeToggle{
   cursor: pointer;
 }
 
 .navbar {
   border-bottom: 3px solid rgba(0, 0, 0, 0.05);
+  background-color: var(--secondary);
+  color: var(--text);
+  a {
+    color: var(--text);
+  }
 }

@@ -1,11 +1,22 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg">
   <div class="container">
     <a class="navbar-brand" [routerLink]="['/']"><b>Where in the world?</b></a>
-    <div class="favoriteButton" [routerLink]="['/', 'favorites']">
-      <i style='color: darkorange; padding-right: 0.3rem'
-          class="fa fa-star"></i><b>Favorites</b>
+    <div style="display: inherit">
+      <div class="favoriteButton" [routerLink]="['/', 'favorites']">
+        <i style='color: darkorange; padding-right: 0.3rem'
+            class="fa fa-star"></i><b>Favorites</b>
+      </div>
+      <!-- <button (click)="toggleDarkTheme()"> toggle </button> -->
+      <div class="themeToggle" (click)="toggleDarkTheme()">
+        <i *ngIf="darkTheme" style='color: var(--text); padding-right: 0.3rem'
+        class="fa fa-moon-o"></i>
+        <i *ngIf="!darkTheme" style='color: var(--text); padding-right: 0.3rem'
+        class="fa fa-sun-o"></i>
+      </div>
     </div>
 
+
+    <!-- <app-dark-mode-toggle (click)="toggleDarkTheme()"></app-dark-mode-toggle> -->
   </div>
 </nav>
 <router-outlet></router-outlet>

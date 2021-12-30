@@ -1,4 +1,4 @@
-<div style="background-color: #fafafa; height:100%;">
+<div class="list-background">
   <div class="container h-100">
     <div *ngIf="!actAsFavorites" class="row pt-4 justify-content-between">
       <div class="col-md-4 col-sm-12">
@@ -9,7 +9,7 @@
         </div>
       </div>
       <div class="col-md-3 col-sm-12 text-xl-end dropdown">
-        <a class="btn btn-light dropdown-toggle filterShadow" href="#" role="button" id="dropdownMenuLink"
+        <a class="btn btn-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
           data-bs-toggle="dropdown" aria-expanded="false">
           Filter by Region
         </a>
@@ -25,17 +25,17 @@
       </div>
     </div>
     <div class="row h-100 justify-content-between pt-5">
-      <div *ngIf="actAsFavorites" class="col-5">
+      <div *ngIf="actAsFavorites" class="col-5 h-100">
         <button [routerLink]="['/']" type="button" class="btn btn-light px-4 mb-4 buttonShadow"><i
             class="fa fa-long-arrow-left"></i>
           &nbsp;Back</button>
       </div>
-      <h3 *ngIf="actAsFavorites" class="mb-3"><b>Favorite countries</b></h3>
-      <div *ngIf="actAsFavorites && !countries">
+      <h3 *ngIf="actAsFavorites" class="mb-3 text"><b>Favorite countries</b></h3>
+      <div *ngIf="actAsFavorites && !countries" class="placeholder">
         <div class='row justify-content-center'>
           <img class="col-md-5" src="assets/undraw_Around_the_world_re_n353.svg">
         </div>
-        <div class='row justify-content-center mt-3 text-center'>
+        <div class='row justify-content-center mt-3 text-center text'>
           <div class='col-12'>Click on the <i class="fa fa-star-o"></i> next to the country name to add it to your
               favorites</div>
         </div>
